@@ -1,0 +1,15 @@
+.data{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    height: 200px;
+    font-size: 15px;
+    height: 100%;
+}
+.data li{
+    list-style: none;
+    line-height: 15px;
+}
+.heading{
+    text-align: left;
+}

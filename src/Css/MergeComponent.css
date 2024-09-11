@@ -1,0 +1,163 @@
+/* MergePdfComponent.css */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.mergePdfComponent {
+  max-width: 87%;
+  height: 300px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+  position: relative;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.mergePdfComponent:hover {
+  background-color: #f1f1f1;
+}
+
+.mergePdfComponent h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.mergePdfComponent input[type="file"] {
+  display: none;
+}
+
+.mergePdfComponent .fileLabel {
+  padding: 10px 20px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mergePdfComponent .fileLabel:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background-color: rgba(255, 255, 255, 0.3);
+  transition: transform 0.3s ease;
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+}
+
+.mergePdfComponent .fileLabel:hover {
+  background-color: #c0392b;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.mergePdfComponent .fileLabel:hover:before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.mergePdfComponent .fileLabel span {
+  position: relative;
+  z-index: 1;
+}
+
+.mergePdfComponent .fileLabel svg {
+  width: 1.5em;
+  height: 1.5em;
+}
+
+.mergePdfComponent button {
+  padding: 10px 20px;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 10px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mergePdfComponent button:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background-color: rgba(255, 255, 255, 0.3);
+  transition: transform 0.3s ease;
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+}
+
+.mergePdfComponent button:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.mergePdfComponent button:hover:before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.mergePdfComponent .statusMessage {
+  color: #333;
+  margin-top: 10px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.mergePdfComponent .errorMessage {
+  color: red;
+  margin-top: 10px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.mergePdfComponent .successMessage {
+  color: #27ae60;
+  margin-top: 10px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.mergePdfComponent .closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.3s ease;
+}
+
+.mergePdfComponent .closeButton:hover {
+  color: #000;
+}

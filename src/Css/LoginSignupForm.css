@@ -1,0 +1,259 @@
+/* General Form Styles */
+.login-signup-form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 340px;
+  padding: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+  background: rgba(255, 255, 255, 0.2); /* Glassmorphism effect */
+  backdrop-filter: blur(15px); /* Glass effect */
+  color: #007bff;
+  box-shadow: 0 0 30px rgba(41, 68, 95, 0.5); /* Enhanced shadow */
+  border-radius: 12px; /* More rounded corners */
+  animation: fadeIn 0.5s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+/* Header Styles with Close Icon */
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative; /* For close icon positioning */
+}
+
+.form-header h2 {
+  margin: 0;
+  color: #007bff;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.close-icon {
+  font-size: 18px;
+  color: #007bff;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.close-icon:hover {
+  color: #0056b3;
+  transform: rotate(90deg); /* Rotate on hover */
+}
+
+.login-signup-form:hover {
+  background-color: rgba(255, 255, 255, 0.3); /* Slight color change on hover */
+}
+
+h2 {
+  text-align: center;
+  margin: 0;
+  color: #007bff;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.form-image {
+  width: 65px;
+  display: block;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.form-heading {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  position: relative; /* For icon placement */
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 40px 10px 10px; /* Padding for icons */
+  box-sizing: border-box;
+  border: 1px solid #a5b1be;
+  border-radius: 8px;
+  transition: border-color 0.3s ease-in-out;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.form-group input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.form-group .input-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #007bff;
+}
+
+button {
+  width: calc(100% - 30px);
+  padding: 12px 20px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+  margin: 10px auto;
+  display: block;
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.toggle-button, .forgot-password-button {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+  margin: 10px 0;
+  transition: color 0.3s ease-in-out;
+}
+
+.forgot-password-button:hover, .toggle-button:hover {
+  color: #f4f4f4;
+}
+
+/* Password Strength Indicator Styles */
+.password-strength {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  height: 35px;
+  width: 100%;
+  max-width: 150px;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  transition: all 0.3s ease-in-out;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.password-strength.weak {
+  background-color: red;
+  border: 2px solid red;
+}
+
+.password-strength.medium {
+  background-color: orange;
+  border: 2px solid orange;
+}
+
+.password-strength.strong {
+  background-color: green;
+  border: 2px solid green;
+}
+
+.password-strength span {
+  display: inline-block;
+  margin-top: 5px;
+}
+
+.password-strength-text {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.alert-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-signup-form {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .form-group input {
+    padding: 8px;
+  }
+
+  .close-icon {
+    font-size: 24px;
+  }
+
+  .password-strength {
+    font-size: 12px;
+    height: 30px;
+  }
+}
+
+/* Keyframes for Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Tooltip Styles */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Adjusted for positioning */
+  left: 50%;
+  margin-left: -80px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
