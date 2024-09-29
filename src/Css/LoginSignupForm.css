@@ -16,6 +16,7 @@
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  align-items: center; /* Center align all items */
 }
 
 /* Header Styles with Close Icon */
@@ -24,7 +25,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  position: relative; /* For close icon positioning */
+  width: 100%; /* Ensure full width for header */
 }
 
 .form-header h2 {
@@ -32,6 +33,8 @@
   color: #007bff;
   font-size: 24px;
   font-weight: bold;
+  text-align: center; /* Center header text */
+  flex-grow: 1; /* Allow h2 to take up remaining space */
 }
 
 .close-icon {
@@ -76,12 +79,14 @@ h2 {
 .form-group {
   margin-bottom: 20px;
   position: relative; /* For icon placement */
+  width: 100%; /* Full width for form groups */
 }
 
 .form-group label {
   margin-bottom: 5px;
   font-weight: bold;
   color: #333;
+  text-align: left; /* Left align labels */
 }
 
 .form-group input {
@@ -156,13 +161,10 @@ button:active {
   width: 100%;
   max-width: 150px;
   border-radius: 4px;
-  background-color: #f0f0f0;
   font-size: 14px;
   font-weight: bold;
   color: white;
   transition: all 0.3s ease-in-out;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .password-strength.weak {
