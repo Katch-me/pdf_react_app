@@ -42,6 +42,15 @@ const LoginSignupForm = ({ closeForm }) => {
     setRequirements({ length: false, specialChar: false, capitalLetter: false });
   };
 
+  const validateEmail = (email) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex pattern
+    if (!emailPattern.test(email)) {
+      setEmailError('Please enter a valid email address.');
+    } else {
+      setEmailError('');
+    }
+  };
+
   const evaluatePasswordStrength = (password) => {
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
     const hasCapitalLetter = /[A-Z]/.test(password);
@@ -77,7 +86,7 @@ const LoginSignupForm = ({ closeForm }) => {
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
     setEmail(newEmail);
-    validateEmail(newEmail);
+    validateEmail(newEmail); // Call validateEmail here
   };
 
   const handleUsernameChange = async (e) => {
@@ -262,9 +271,8 @@ const LoginSignupForm = ({ closeForm }) => {
             </div>
             <button type="submit">Reset Password</button>
             <p>
-              Remembered your password?{' '}
-              <button className="toggle-button" onClick={() => setIsForgotPassword(false)}>
-                Login
+              <button className="toggle-button" onClick={toggleForm}>
+                Back to Login/Sign Up
               </button>
             </p>
           </form>
