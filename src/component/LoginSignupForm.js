@@ -16,17 +16,8 @@ const LoginSignupForm = ({ closeForm }) => {
   const [requirements, setRequirements] = useState({
     length: false,
     specialChar: false,
-    capitalLetter: false,
+    capitalLetter: false
   });
-
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setEmailError('Invalid email format.');
-    } else {
-      setEmailError('');
-    }
-  };
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
@@ -92,18 +83,15 @@ const LoginSignupForm = ({ closeForm }) => {
   const handleUsernameChange = async (e) => {
     const newUsername = e.target.value;
     setUsername(newUsername);
-
     if (!isLogin && newUsername.trim() === '') {
       setUsernameError('Username is required for signup.');
     } else {
       setUsernameError('');
     }
-
     if (!isLogin) {
       try {
         const response = await fetch(`http://localhost:5000/check-username/${newUsername}`);
         const result = await response.json();
-
         if (response.ok && result.exists) {
           setUsernameExists('Username is already taken.');
         } else {
@@ -275,7 +263,7 @@ const LoginSignupForm = ({ closeForm }) => {
             <button type="submit">Reset Password</button>
             <p>
               Remembered your password?{' '}
-              <button className="toggle-button" onClick={toggleForm}>
+              <button className="toggle-button" onClick={() => setIsForgotPassword(false)}>
                 Login
               </button>
             </p>
