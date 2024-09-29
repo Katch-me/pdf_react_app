@@ -13,6 +13,20 @@ const LoginSignupForm = ({ closeForm }) => {
   const [usernameError, setUsernameError] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
   const [usernameExists, setUsernameExists] = useState('');
+  const [requirements, setRequirements] = useState({
+    length: false,
+    specialChar: false,
+    capitalLetter: false,
+  });
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setEmailError('Invalid email format.');
+    } else {
+      setEmailError('');
+    }
+  };
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
@@ -34,16 +48,24 @@ const LoginSignupForm = ({ closeForm }) => {
     setEmailError('');
     setUsernameError('');
     setUsernameExists('');
+    setRequirements({ length: false, specialChar: false, capitalLetter: false });
   };
 
   const evaluatePasswordStrength = (password) => {
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
     const hasCapitalLetter = /[A-Z]/.test(password);
+    const isValidLength = password.length >= 8;
+
+    setRequirements({
+      length: isValidLength,
+      specialChar: hasSpecialChar,
+      capitalLetter: hasCapitalLetter,
+    });
 
     if (password.length === 0) {
       setPasswordStrength('');
       setPasswordAlert('');
-    } else if (password.length < 8) {
+    } else if (!isValidLength) {
       setPasswordStrength('weak');
       setPasswordAlert('Password must be at least 8 characters long.');
     } else if (!hasSpecialChar || !hasCapitalLetter) {
@@ -52,15 +74,6 @@ const LoginSignupForm = ({ closeForm }) => {
     } else {
       setPasswordStrength('strong');
       setPasswordAlert('');
-    }
-  };
-
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setEmailError('Please enter a valid email address.');
-    } else {
-      setEmailError('');
     }
   };
 
@@ -79,15 +92,18 @@ const LoginSignupForm = ({ closeForm }) => {
   const handleUsernameChange = async (e) => {
     const newUsername = e.target.value;
     setUsername(newUsername);
+
     if (!isLogin && newUsername.trim() === '') {
       setUsernameError('Username is required for signup.');
     } else {
       setUsernameError('');
     }
+
     if (!isLogin) {
       try {
         const response = await fetch(`http://localhost:5000/check-username/${newUsername}`);
         const result = await response.json();
+
         if (response.ok && result.exists) {
           setUsernameExists('Username is already taken.');
         } else {
@@ -100,7 +116,6 @@ const LoginSignupForm = ({ closeForm }) => {
   };
 
   useEffect(() => {
-    // Enable submit button only if all validations pass
     if (
       (isLogin || passwordStrength === 'strong') &&
       emailError === '' &&
@@ -113,13 +128,13 @@ const LoginSignupForm = ({ closeForm }) => {
   }, [passwordStrength, emailError, usernameError, usernameExists, isLogin]);
 
   const submitForm = async (e) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
 
     const endpoint = isLogin ? '/login' : '/signup';
     const requestData = {
       email,
       password,
-      ...(isLogin ? {} : { username }), // Only send username for signup
+      ...(isLogin ? {} : { username }),
     };
 
     try {
@@ -134,14 +149,12 @@ const LoginSignupForm = ({ closeForm }) => {
       const result = await response.json();
 
       if (response.ok) {
-        // Handle successful login/signup (e.g., store JWT in localStorage)
         if (result.token) {
           localStorage.setItem('token', result.token);
         }
         alert('Successful!');
-        closeForm(); // Close form after successful submission
+        closeForm();
       } else {
-        // Handle error response
         alert(result.message || 'An error occurred.');
       }
     } catch (error) {
@@ -199,6 +212,20 @@ const LoginSignupForm = ({ closeForm }) => {
                 onChange={handlePasswordChange}
                 required
               />
+              <div className="checkbox-group">
+                <label>
+                  <input type="checkbox" checked={requirements.length} readOnly />
+                  At least 8 characters
+                </label>
+                <label>
+                  <input type="checkbox" checked={requirements.specialChar} readOnly />
+                  At least one special character
+                </label>
+                <label>
+                  <input type="checkbox" checked={requirements.capitalLetter} readOnly />
+                  At least one capital letter
+                </label>
+              </div>
               <div className={`password-strength ${passwordStrength}`}>
                 {passwordStrength && (
                   <span className="password-strength-text">
@@ -248,7 +275,7 @@ const LoginSignupForm = ({ closeForm }) => {
             <button type="submit">Reset Password</button>
             <p>
               Remembered your password?{' '}
-              <button className="toggle-button" onClick={() => setIsForgotPassword(false)}>
+              <button className="toggle-button" onClick={toggleForm}>
                 Login
               </button>
             </p>
