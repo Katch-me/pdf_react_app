@@ -113,9 +113,9 @@ function Header({ onSelectMenu }) {
                   <ul className={`dropdown-menu ${menu.id === 'videoTools' ? 'scrollable-menu' : ''}`}>
                     {menu.options.map((option) => (
                       <li key={option.id}>
-                        <button onClick={() => handleMenuClick(option.link)} className="menu-item-btn">
+                        <a onClick={() => handleMenuClick(option.link)} className="menu-item-btn">
                           {option.label}
-                        </button>
+                        </a>
                       </li>
                     ))}
                   </ul>
