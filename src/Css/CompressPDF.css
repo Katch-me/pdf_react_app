@@ -354,23 +354,19 @@
 
 .compressPdfComponent .closeButton {
   position: absolute;
-  top: -5px;  /* Increased top spacing */
-  right: -350px; /* Increased right spacing for better alignment */
+  top: 1px;  /* Increased top spacing */
+  right: 10px; /* Increased right spacing for better alignment */
   background: none;
   border: none;
   width: 150; /* Set specific width to reduce button size */
   padding: 10px 8;
-  font-size: 1em;  /* Slightly larger button size */
+  font-size: 0.9em;  /* Slightly larger button size */
   cursor: pointer;
   color: #555;
   transition: color 0.3s ease, transform 0.3s ease;
   z-index: 2;  /* Ensure the close button is on top */
 }
 
-.compressPdfComponent .closeButton:hover {
-  color: #000;
-  transform: scale(1.1); /* Adds a slight zoom effect on hover */
-}
 
 .compressPdfComponent .errorMessage {
   color: red;

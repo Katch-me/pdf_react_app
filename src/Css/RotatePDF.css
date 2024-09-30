@@ -145,15 +145,13 @@
     right: 10px;
     background: none;
     border: none;
-    font-size: 1.5rem;
+    font-size: 0.9rem;
     cursor: pointer;
     color: #555;
     transition: color 0.3s ease;
   }
   
-  .rotatePdf .closeButton:hover {
-    color: #000;
-  }
+  
   
   .rotatePdf .errorMessage {
     color: red;

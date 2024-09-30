@@ -90,8 +90,6 @@
 
 .pdfToPngConverter button {
   padding: 10px 20px;
-  background-color: #28a745;
-  color: white;
   border: none;
   border-radius: 25px;
   font-size: 1rem;
@@ -117,7 +115,6 @@
 }
 
 .pdfToPngConverter button:hover {
-  background-color: #218838;
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
@@ -154,21 +151,22 @@
   display: block;
 }
 
+/* Updated close button */
 .pdfToPngConverter .closeButton {
   position: absolute;
-  top: 10px;
+  top: 1px;
   right: 10px;
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 0.9rem;
   cursor: pointer;
   color: #555;
-  transition: color 0.3s ease;
+  z-index: 10; /* Ensure it's above other elements */
 }
 
-.pdfToPngConverter .closeButton:hover {
-  color: #000;
-}
+
+
+
 
 .pdfToPngConverter .errorMessage {
   color: red;

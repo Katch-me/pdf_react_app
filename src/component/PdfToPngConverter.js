@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { PdfContext } from '../PdfContext';
 import '../Css/PdfToPngConverter.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const PdfToPngConverter = ({ onClose }) => {
   const { pdfFile, setPdfFile, convertedImages, setConvertedImages } = useContext(PdfContext);
@@ -61,6 +62,17 @@ const PdfToPngConverter = ({ onClose }) => {
           {convertedImages.map((imageUrl, index) => (
             <div key={index} className="imageContainer">
               <img src={imageUrl} alt={`Converted Page ${index + 1}`} />
+              <button
+                className="closeButton"
+                onClick={() => {
+                  const newImages = [...convertedImages];
+                  newImages.splice(index, 1);
+                  setConvertedImages(newImages);
+                }}
+                aria-label="Remove image"
+              >
+                <i className="fas fa-times"></i> {/* Font Awesome cross mark */}
+              </button>
             </div>
           ))}
         </div>

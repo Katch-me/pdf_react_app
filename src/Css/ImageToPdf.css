@@ -140,11 +140,8 @@
   background-color: transparent;
   border: none;
   color: #555;
-  font-size: 1.5rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: color 0.3s ease;
 }
 
-.imageToPdf .closeButton:hover {
-  color: #333;
-}
