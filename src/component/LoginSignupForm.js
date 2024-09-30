@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../Css/LoginSignupForm.css'; // Ensure this path is correct
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const LoginSignupForm = ({ closeForm }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -7,7 +8,6 @@ const LoginSignupForm = ({ closeForm }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
-  const [passwordStrength, setPasswordStrength] = useState('');
   const [passwordAlert, setPasswordAlert] = useState('');
   const [emailError, setEmailError] = useState('');
   const [usernameError, setUsernameError] = useState('');
@@ -16,7 +16,8 @@ const LoginSignupForm = ({ closeForm }) => {
   const [requirements, setRequirements] = useState({
     length: false,
     specialChar: false,
-    capitalLetter: false
+    capitalLetter: false,
+    number: false,
   });
 
   const toggleForm = () => {
@@ -25,54 +26,42 @@ const LoginSignupForm = ({ closeForm }) => {
     resetForm();
   };
 
-  const showForgotPassword = () => {
-    setIsForgotPassword(true);
-    resetForm();
-  };
-
   const resetForm = () => {
     setEmail('');
     setPassword('');
     setUsername('');
-    setPasswordStrength('');
     setPasswordAlert('');
     setEmailError('');
     setUsernameError('');
     setUsernameExists('');
-    setRequirements({ length: false, specialChar: false, capitalLetter: false });
+    setRequirements({ length: false, specialChar: false, capitalLetter: false, number: false });
   };
 
   const validateEmail = (email) => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex pattern
-    if (!emailPattern.test(email)) {
-      setEmailError('Please enter a valid email address.');
-    } else {
-      setEmailError('');
-    }
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setEmailError(emailPattern.test(email) ? '' : 'Please enter a valid email address.');
   };
 
-  const evaluatePasswordStrength = (password) => {
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  const evaluatePasswordRequirements = (password) => {
+    const hasSpecialChar = /[!@#$%^&*]/.test(password);
     const hasCapitalLetter = /[A-Z]/.test(password);
-    const isValidLength = password.length >= 8;
+    const hasNumber = /\d/.test(password);
+    const isValidLength = password.length >= 8 && password.length <= 20;
 
     setRequirements({
       length: isValidLength,
       specialChar: hasSpecialChar,
       capitalLetter: hasCapitalLetter,
+      number: hasNumber,
     });
 
-    if (password.length === 0) {
-      setPasswordStrength('');
+    if (!isLogin && password.length === 0) {
       setPasswordAlert('');
-    } else if (!isValidLength) {
-      setPasswordStrength('weak');
-      setPasswordAlert('Password must be at least 8 characters long.');
-    } else if (!hasSpecialChar || !hasCapitalLetter) {
-      setPasswordStrength('medium');
-      setPasswordAlert('Password must include at least one special character and one capital letter.');
+    } else if (!isLogin && !isValidLength) {
+      setPasswordAlert('Password must be between 8 and 20 characters long.');
+    } else if (!isLogin && (!hasSpecialChar || !hasCapitalLetter || !hasNumber)) {
+      setPasswordAlert('Password must include at least one special character, one uppercase letter, and one number.');
     } else {
-      setPasswordStrength('strong');
       setPasswordAlert('');
     }
   };
@@ -80,13 +69,13 @@ const LoginSignupForm = ({ closeForm }) => {
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
-    evaluatePasswordStrength(newPassword);
+    evaluatePasswordRequirements(newPassword);
   };
 
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
     setEmail(newEmail);
-    validateEmail(newEmail); // Call validateEmail here
+    validateEmail(newEmail);
   };
 
   const handleUsernameChange = async (e) => {
@@ -114,18 +103,24 @@ const LoginSignupForm = ({ closeForm }) => {
 
   useEffect(() => {
     if (
-      (isLogin || passwordStrength === 'strong') &&
+      (isLogin || (requirements.length && requirements.specialChar && requirements.capitalLetter && requirements.number)) &&
       emailError === '' &&
-      (isLogin || usernameError === '' && usernameExists === '')
+      (isLogin || (usernameError === '' && usernameExists === ''))
     ) {
       setIsFormValid(true);
     } else {
       setIsFormValid(false);
     }
-  }, [passwordStrength, emailError, usernameError, usernameExists, isLogin]);
+  }, [requirements, emailError, usernameError, usernameExists, isLogin]);
 
   const submitForm = async (e) => {
     e.preventDefault();
+
+    // Check if the form is valid before submitting
+    if (!isFormValid) {
+      alert('Please fill in all required fields correctly.');
+      return; // Prevent submission
+    }
 
     const endpoint = isLogin ? '/login' : '/signup';
     const requestData = {
@@ -209,74 +204,40 @@ const LoginSignupForm = ({ closeForm }) => {
                 onChange={handlePasswordChange}
                 required
               />
-              <div className="checkbox-group">
-                <label>
-                  <input type="checkbox" checked={requirements.length} readOnly />
-                  At least 8 characters
-                </label>
-                <label>
-                  <input type="checkbox" checked={requirements.specialChar} readOnly />
-                  At least one special character
-                </label>
-                <label>
-                  <input type="checkbox" checked={requirements.capitalLetter} readOnly />
-                  At least one capital letter
-                </label>
-              </div>
-              <div className={`password-strength ${passwordStrength}`}>
-                {passwordStrength && (
-                  <span className="password-strength-text">
-                    {passwordStrength === 'weak' && 'Weak'}
-                    {passwordStrength === 'medium' && 'Medium'}
-                    {passwordStrength === 'strong' && 'Strong'}
-                  </span>
-                )}
-              </div>
-              {passwordAlert && (
-                <div className="alert-message">
-                  <span>{passwordAlert}</span>
+              {passwordAlert && <div className="error-message">{passwordAlert}</div>}
+              {!isLogin && (
+                <div className="password-requirements">
+                  <p className={requirements.length ? 'valid' : 'invalid'}>
+                    <i className={`fa ${requirements.length ? 'fa-check' : 'fa-times'}`}></i>
+                    Between 8 and 20 characters
+                  </p>
+                  <p className={requirements.specialChar ? 'valid' : 'invalid'}>
+                    <i className={`fa ${requirements.specialChar ? 'fa-check' : 'fa-times'}`}></i>
+                    At least one special character
+                  </p>
+                  <p className={requirements.capitalLetter ? 'valid' : 'invalid'}>
+                    <i className={`fa ${requirements.capitalLetter ? 'fa-check' : 'fa-times'}`}></i>
+                    At least one capital letter
+                  </p>
+                  <p className={requirements.number ? 'valid' : 'invalid'}>
+                    <i className={`fa ${requirements.number ? 'fa-check' : 'fa-times'}`}></i>
+                    At least one number
+                  </p>
                 </div>
               )}
             </div>
-            <button type="submit" disabled={!isFormValid}>
-              {isLogin ? 'Login' : 'Sign Up'}
-            </button>
+            <button type="submit">{isLogin ? 'Login' : 'Sign Up'}</button>
           </form>
-          {isLogin && (
-            <p className="forgot-password">
-              <button className="forgot-password-button" onClick={showForgotPassword}>
-                Forgot Password?
-              </button>
-            </p>
-          )}
-          <p>
-            {isLogin ? 'New user?' : 'Already have an account?'}{' '}
-            <button className="toggle-button" onClick={toggleForm}>
-              {isLogin ? 'Sign Up' : 'Login'}
-            </button>
-          </p>
+          <button className="toggle-form-button" onClick={toggleForm}>
+            {isLogin ? "Don't have an account? Sign Up" : 'Already have an account? Login'}
+          </button>
         </>
       ) : (
-        <>
-          <h2>Reset Password</h2>
-          <form>
-            <div className="form-group">
-              <label htmlFor="reset-email">Email:</label>
-              <input
-                type="email"
-                id="reset-email"
-                name="reset-email"
-                required
-              />
-            </div>
-            <button type="submit">Reset Password</button>
-            <p>
-              <button className="toggle-button" onClick={toggleForm}>
-                Back to Login/Sign Up
-              </button>
-            </p>
-          </form>
-        </>
+        <div>
+          <h2>Forgot Password</h2>
+          <p>Please contact support to reset your password.</p>
+          <button onClick={() => setIsForgotPassword(false)}>Back to Login</button>
+        </div>
       )}
     </div>
   );
